@@ -16,6 +16,7 @@ body {
     justify-content: space-evenly;
     font-size: 3rem;
     z-index: 1;
+    user-select: none;
 }
 
 .header>h1 {
@@ -144,6 +145,34 @@ form input:active {
 
 .c4 {
     border-radius: 0 0 15px 0
+}
+
+.score {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(114, 75, 48);
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+    min-width: 518px;
+}
+
+.victory {
+    background-color: rgb(114, 75, 48);
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+    min-width: 518px;
+    user-select: none;
+}
+
+.victory:hover {
+    background-color: rgb(151, 94, 56);
+}
+
+.victory:active {
+    background-color: rgb(77, 55, 40);
 }
 
 .footer {
