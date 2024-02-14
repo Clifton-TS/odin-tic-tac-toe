@@ -24,33 +24,46 @@ function CreateBoard (playerX, playerO) {
 
         timesPlayed: 0,
 
+        ended : false,
+
         resetBoard() {
             this.board = [
                 [0, 0, 0],
                 [0, 0, 0],
                 [0, 0, 0]
             ]
+            let squares = document.querySelectorAll(".square")
+            squares.forEach(squareDiv => {
+                squareDiv.textContent = ""
+            })
             this.currentPlayer = playerX
+            this.ended = false
             this.timesPlayed = 0
         },
         
         insertSymbol(x, y) {
-            if (this.board[x][y] == 0) {
+            if (this.board[x][y] == 0 && this.ended == false) {
                 this.board[x][y] = this.currentPlayer.symbol
                 this.timesPlayed++
 
+                htmlSquare = document.getElementById(x + y)
 
+                if (htmlSquare.textContent == ""){
+                    htmlSquare.textContent = this.currentPlayer.symbol
+                }
 
+                this.checkForWin(this.currentPlayer)
+                
                 if(this.currentPlayer == playerX) {
                     this.currentPlayer = playerO
                 } else if(this.currentPlayer == playerO) {
                     this.currentPlayer = playerX
                 }
+
             }
         },
 
         checkForWin(player) {
-            console.log("rodou esse LIXO com o " + player.symbol)
             trips = player.symbol.repeat(3)
             if (this.board[0][0] + this.board[0][1] + this.board[0][2] == trips
                 || this.board[1][0] + this.board[1][1] + this.board[1][2] == trips
@@ -60,16 +73,37 @@ function CreateBoard (playerX, playerO) {
                 || this.board[0][2] + this.board[1][2] + this.board[2][2] == trips
                 || this.board[0][0] + this.board[1][1] + this.board[2][2] == trips
                 || this.board[0][2] + this.board[1][1] + this.board[2][0] == trips){
-                    console.log("retornou" + player.symbol)
                     player.score++
-                    this.resetBoard()
-                    return player.symbol
+                    this.ended = true
+                    this.showVictory(player)
                 }else if (this.timesPlayed >= 9) {
-                    console.log("retornou draw" )
-                    return "draw"
+                    this.ended = true
+                    this.showVictory("draw")
                 }
-                console.log("retornou foi PORRA")
-                console.log(this.board)
+        },
+
+        showVictory(winner) {
+            mainDiv = document.querySelector(".main")
+
+            var victoryDiv = document.createElement("div")
+            victoryDiv.classList.add("victory")
+            var victoryH1 = document.createElement("h1")
+            var playAgainH1 = document.createElement("h1")
+            playAgainH1.textContent = "Click here to play again."
+            victoryDiv.appendChild(victoryH1)
+            victoryDiv.appendChild(playAgainH1)
+            if (winner == "draw") {
+                victoryH1.textContent = "It's a draw."
+            }else {
+                victoryH1.textContent = `${winner.name} wins!`
+            }
+
+            victoryDiv.addEventListener("click", () => {
+                this.resetBoard()
+                victoryDiv.remove()
+            })
+
+            mainDiv.appendChild(victoryDiv);
         },
 
         showHTML() {
@@ -146,42 +180,15 @@ function CreateBoard (playerX, playerO) {
             scoreDiv.appendChild(oScoreH1);
             mainDiv.appendChild(scoreDiv);
         
-            var victoryDiv = document.createElement("div");
-            victoryDiv.classList.add("victory");
-            var victoryH1 = document.createElement("h1");
-            victoryH1.textContent = "AAAAAAAAAAAAAAAAAAAA WINS!";
-            var playAgainH1 = document.createElement("h1");
-            playAgainH1.textContent = "Click here to play again.";
-            victoryDiv.appendChild(victoryH1);
-            victoryDiv.appendChild(playAgainH1);
-            //mainDiv.appendChild(victoryDiv);
-        
-            squares = document.querySelectorAll(".square")
-            console.log(squares)
+            let squares = document.querySelectorAll(".square")
             squares.forEach(squareDiv => {
                 squareDiv.addEventListener("click", () => {
-                    if (this.checkForWin(this.currentPlayer) == this.currentPlayer.symbol) {
-                        squares.forEach(squareDiv => {
-                            squareDiv.textContent = ""
-                        })
-                    }
-
-                    if (squareDiv.textContent == ""){
-                        squareDiv.textContent = this.currentPlayer.symbol
-                    }
 
                     this.insertSymbol(squareDiv.id.charAt(0), squareDiv.id.charAt(1))
                     h1Element.textContent = `${this.currentPlayer.name}'s Turn`;
+                    xScoreH1.textContent = `${playerX.name}:${playerX.score}`
+                    oScoreH1.textContent = `${playerO.name}:${playerO.score}`
 
-                    if (this.checkForWin(this.currentPlayer) == this.currentPlayer.symbol) {
-                        console.log("deu if")
-                        victoryH1.textContent = `${this.currentPlayer.name} WINS!`;
-                        mainDiv.appendChild(victoryDiv);
-                        squares.forEach(squareDiv => {
-                            squareDiv.textContent = ""
-                        })
-                    }
-                    
                 })
             })
         }
@@ -197,13 +204,27 @@ form.addEventListener("submit", (e) => {
     e.preventDefault()
 
     if(!board) {
-    XInput = document.getElementById("XName")
-    OInput = document.getElementById("OName")
+        XInput = document.getElementById("XName")
+        OInput = document.getElementById("OName")
 
-    playerX = CreatePlayer(XInput.value, "X", 0)
-    playerO = CreatePlayer(OInput.value, "O", 0)
+        playerX = CreatePlayer(XInput.value, "X", 0)
+        playerO = CreatePlayer(OInput.value, "O", 0)
 
-    board = CreateBoard(playerX, playerO)
-    board.showHTML()
+        board = CreateBoard(playerX, playerO)
+        board.showHTML()
+    }else {
+        document.querySelector(".container").remove()
+        document.querySelector(".score").remove()
+        document.querySelector(".victory").remove()
+
+        XInput = document.getElementById("XName")
+        OInput = document.getElementById("OName")
+
+        playerX = CreatePlayer(XInput.value, "X", 0)
+        playerO = CreatePlayer(OInput.value, "O", 0)
+
+        board = CreateBoard(playerX, playerO)
+        board.showHTML()
     }
+    
 })
