@@ -215,7 +215,10 @@ form.addEventListener("submit", (e) => {
     }else {
         document.querySelector(".container").remove()
         document.querySelector(".score").remove()
-        document.querySelector(".victory").remove()
+        try {
+            document.querySelector(".victory").remove()
+        } catch {}
+        
 
         XInput = document.getElementById("XName")
         OInput = document.getElementById("OName")
