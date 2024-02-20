@@ -78,6 +78,10 @@ form input:active {
     background-color: rgb(77, 55, 40);
 }
 
+form input:focus {
+    outline: solid 1px black;
+}
+
 form :nth-child(1) { order: 1; }
 
 form :nth-child(2) { order: 3; }
