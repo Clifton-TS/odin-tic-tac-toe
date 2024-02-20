@@ -203,13 +203,22 @@ board = false
 form.addEventListener("submit", (e) => {
     e.preventDefault()
 
+    XInput = document.getElementById("XName").value
+    OInput = document.getElementById("OName").value
+
+    if (XInput == "") {
+        XInput = "X"
+    }
+
+    if (OInput == "") {
+        OInput = "O"
+    }
+
+    playerX = CreatePlayer(XInput, "X", 0)
+
+    playerO = CreatePlayer(OInput, "O", 0)
+
     if(!board) {
-        XInput = document.getElementById("XName")
-        OInput = document.getElementById("OName")
-
-        playerX = CreatePlayer(XInput.value, "X", 0)
-        playerO = CreatePlayer(OInput.value, "O", 0)
-
         board = CreateBoard(playerX, playerO)
         board.showHTML()
     }else {
@@ -218,13 +227,6 @@ form.addEventListener("submit", (e) => {
         try {
             document.querySelector(".victory").remove()
         } catch {}
-        
-
-        XInput = document.getElementById("XName")
-        OInput = document.getElementById("OName")
-
-        playerX = CreatePlayer(XInput.value, "X", 0)
-        playerO = CreatePlayer(OInput.value, "O", 0)
 
         board = CreateBoard(playerX, playerO)
         board.showHTML()
