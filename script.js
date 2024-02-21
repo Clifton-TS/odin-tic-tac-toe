@@ -37,6 +37,8 @@ function CreateBoard (playerX, playerO) {
                 squareDiv.textContent = ""
             })
             this.currentPlayer = playerX
+            turn = document.querySelector(".container>h1")
+            turn.textContent = `${this.currentPlayer.name}'s Turn`
             this.ended = false
             this.timesPlayed = 0
         },
