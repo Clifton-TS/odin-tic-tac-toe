@@ -177,7 +177,7 @@ function CreateBoard (playerX, playerO) {
             xScoreH1.textContent = `${playerX.name}:${playerX.score}`;
             var oScoreH1 = document.createElement("h1");
             oScoreH1.classList.add("oScore");
-            oScoreH1.textContent = `${playerO.name}:${playerO.score}`;
+            oScoreH1.textContent = `${playerO.score}:${playerO.name}`;
             scoreDiv.appendChild(xScoreH1);
             scoreDiv.appendChild(oScoreH1);
             mainDiv.appendChild(scoreDiv);
